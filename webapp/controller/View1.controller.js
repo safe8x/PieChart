@@ -7,31 +7,29 @@ sap.ui.define([
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
     'sap/base/util/UriParameters',
+    'sap/m/BusyDialog',
     './InitPage'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BindingMode, JSONModel, ChartFormatter, Format, Filter, FilterOperator, UriParameters, InitPageUtil) {
+    function (Controller, BindingMode, JSONModel, ChartFormatter, Format, Filter, FilterOperator, UriParameters,BusyDialog, InitPageUtil) {
         "use strict";
 
         oVizFrame: null;
         vServiceUrl: null;
         oModel: null;
+     
 
         return Controller.extend("piechart.piechart.controller.View1", {
-
+          
 
 
             onInit: function () {
+                var BusyDialog1 =  new BusyDialog();
                 this.vServiceUrl = "/sap/opu/odata/sap/Z_B_DBFAM_VAR_COMPO/";
                 this.oModel = new sap.ui.model.odata.v2.ODataModel(this.vServiceUrl, true);
-
-              
-              
-
-                
-
+                BusyDialog1.open();
                 /*
                 // var nomeFile;
                 //var complete_url = "https://vhaiaqedci.sap.aliaspa.it:44300/sap/bc/ui2/flp#ZANLAGE-displayWithParams?UtilitiesInstallation=4100755351&sap-xapp-state=ASMUDLH6A5MSGO9UF23VSAON85O3MYPPGNYYAPFU"
@@ -51,13 +49,13 @@ sap.ui.define([
                     }
                 });
 */
-                //Gestione del recupero dei Parametri nell'Url tramite oggetto Semantivo
+                //Gestione del recupero dei Parametri nell'Url tramite oggetto Semantico
+                if (this.getOwnerComponent().getComponentData() ) {
                 var startupParams = this.getOwnerComponent().getComponentData().startupParameters; // get Startup params from Owner Component
-                if (startupParams.nomeFile) {
-                    var nomeFile = startupParams.nomeFile[0];                  
+                if (startupParams.filename) {
+                    var nomeFile = startupParams.filename[0];                  
                 }
-
-
+            }
                 var pieChartModel = new sap.ui.model.json.JSONModel([]);
                 this.getView().setModel(pieChartModel, "PieData")
 
@@ -79,9 +77,13 @@ sap.ui.define([
                     success: function (oData, response) {
                         //that.getView().setModel(that.oModel, "PieChart");
                         that.getView().getModel("PieData").setData(oData);
+                        BusyDialog1.close();
+                    },
+                    error: function(){
+                        BusyDialog1.close();
                     }
                 });
-
+                
                 var oVizFrame = this.oVizFrame = this.getView().byId("idVizFrame");
                 oVizFrame.setVizProperties({
                     legend: {
