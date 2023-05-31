@@ -8,12 +8,13 @@ sap.ui.define([
     'sap/ui/model/FilterOperator',
     'sap/base/util/UriParameters',
     'sap/m/BusyDialog',
+    'sap/m/MessageToast',
     './InitPage'
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, BindingMode, JSONModel, ChartFormatter, Format, Filter, FilterOperator, UriParameters,BusyDialog, InitPageUtil) {
+    function (Controller, BindingMode, JSONModel, ChartFormatter, Format, Filter, FilterOperator, UriParameters,BusyDialog, MessageToast,InitPageUtil) {
         "use strict";
 
         oVizFrame: null;
@@ -66,8 +67,13 @@ sap.ui.define([
                 filters.push(filterByName);  
 
                 //var filters = new Filter("filename", sap.ui.model.FilterOperator.EQ, nomeFile);
-
-                } 
+                    
+                } else {
+                    BusyDialog1.close();  
+                    var msg = 'Nessun FileName specificato';
+                        MessageToast.show(msg);
+                        return '';
+                }
 
 
                 var that = this;
@@ -81,6 +87,8 @@ sap.ui.define([
                     },
                     error: function(){
                         BusyDialog1.close();
+                        var msg = 'Errore Lettura Entity ZC_PIE_CHART';
+                        MessageToast.show(msg);
                     }
                 });
                 
