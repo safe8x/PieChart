@@ -4,8 +4,12 @@
     xmlns:viz="sap.viz.ui5.controls" xmlns:layout="sap.ui.layout"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data" height="100%"    
+    xmlns:form="sap.ui.layout.form"
     >
     <Page id="page" title="{i18n>title}">
+        <Label
+        id= "label1"
+        design="Bold" />
         <layout:FixFlex id='chartFixFlex' minFlexSize="250"  >
             <!--Below is the setting panel -->
              <layout:flexContent>

@@ -65,11 +65,10 @@ sap.ui.define([
                                    // var filterByName = new sap.ui.model.Filter("filename", sap.ui.model.FilterOperator.EQ, "ALIA_EMPOLI_2021-01-01_2021-12-31.TXT");  
                 var filterByName = new sap.ui.model.Filter("filename", sap.ui.model.FilterOperator.EQ, nomeFile);  
                 filters.push(filterByName);  
-
                 //var filters = new Filter("filename", sap.ui.model.FilterOperator.EQ, nomeFile);
                     
                 } else {
-                    BusyDialog1.close();  
+                    BusyDialog1.close(); 
                     var msg = 'Nessun FileName specificato';
                         MessageToast.show(msg);
                         return '';
@@ -77,6 +76,7 @@ sap.ui.define([
 
 
                 var that = this;
+                this.getView().byId("label1").setValue("Statistiche" + nomeFile);
                 this.oModel.read("/ZC_PIE_CHART", {
                     async: false,
                     filters: [filters],
